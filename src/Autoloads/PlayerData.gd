@@ -15,3 +15,7 @@ func set_hp(val:int) -> void:
 		val = 0
 	hp = val
 	emit_signal("hp_updated")
+
+func reset() -> void:
+	score = 0
+	hp = 40

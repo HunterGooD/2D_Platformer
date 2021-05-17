@@ -3,9 +3,10 @@ extends Area2D
 var next_to_player = false
 
 func _physics_process(delta):
-	if Input.is_action_pressed("use") and next_to_player:
+	if Input.is_action_just_pressed("use") and next_to_player:
 		PlayerData.hp += 10
 		queue_free()
+		
 
 func _on_MedicalKit_body_entered(body):
 	$AnimationPlayer.play("fade_in")

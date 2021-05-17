@@ -1,2 +1,2 @@
-extends "res://src/Enemy/Enemy.gd"
+extends "res://MeleeEnemy.gd"
 

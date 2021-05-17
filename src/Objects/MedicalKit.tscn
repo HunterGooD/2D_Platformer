@@ -8,7 +8,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16.3233, 15.6773 )
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 resource_name = "fade_in"
 tracks/0/type = "value"
 tracks/0/path = NodePath("MarginContainer:rect_position")
@@ -35,7 +35,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "fade_out"
 tracks/0/type = "value"
 tracks/0/path = NodePath("MarginContainer:rect_position")
@@ -62,7 +62,7 @@ tracks/1/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=4]
 size = 31
 font_data = ExtResource( 2 )
 
@@ -76,8 +76,8 @@ texture = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/fade_in = SubResource( 3 )
-anims/fade_out = SubResource( 4 )
+anims/fade_in = SubResource( 2 )
+anims/fade_out = SubResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 modulate = Color( 1, 1, 1, 0 )
@@ -110,7 +110,7 @@ margin_left = -5.02362
 margin_top = -15.3496
 margin_right = 8.97638
 margin_bottom = 16.6504
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 4 )
 text = "F"
 align = 1
 valign = 1

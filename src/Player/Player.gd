@@ -1,5 +1,7 @@
 extends "res://src/Player/Actor.gd"
 
+const Enemy = preload("res://src/Enemy/Enemy.gd")
+
 export var speed: = 300
 export var jump: = 1000
 export var dmg = 10
@@ -20,6 +22,11 @@ func _ready():
 	PlayerData.connect("hp_updated", self, "update_hp")
 
 func _physics_process(delta: float) -> void:
+	
+	if Input.is_action_just_pressed("reload"):
+		PlayerData.reset()
+		get_tree().reload_current_scene()
+	
 	if not is_dead:
 			
 		if Input.is_action_pressed("player_atack_light") and is_on_floor() and !is_atack:
@@ -31,20 +38,23 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_atack and not is_dead:
 		if Input.is_action_just_pressed("player_couth") and is_on_floor():
+			#if $AnimatedSprite.animation == "run":
+			#	$AnimatedSprite.animation = "slide"
+			#else:
 			is_crouch = true
 			$AnimatedSprite.animation = "crouch"
 		
 		if Input.is_action_pressed("player_left"):
 			velocity.x = -speed
 			$AnimatedSprite.flip_h = true
-			$Atack/AtackCollision.position.x = -abs($Atack/AtackCollision.position.x)
-			$Atack/AtackCollision.set_deferred("disabled", true)
+			$AnimatedSprite/Atack/AtackCollision.position.x = -abs($AnimatedSprite/Atack/AtackCollision.position.x)
+			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
 			play_aRun()
 		elif Input.is_action_pressed("player_right"):
 			velocity.x = speed
 			$AnimatedSprite.flip_h = false
-			$Atack/AtackCollision.position.x = abs($Atack/AtackCollision.position.x)
-			$Atack/AtackCollision.set_deferred("disabled", true)
+			$AnimatedSprite/Atack/AtackCollision.position.x = abs($AnimatedSprite/Atack/AtackCollision.position.x)
+			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
 			play_aRun()
 		else:
 			velocity.x = 0
@@ -52,7 +62,7 @@ func _physics_process(delta: float) -> void:
 				$AnimatedSprite.animation ="idle"
 		
 		if Input.is_action_pressed("player_jump") and is_on_floor():
-			$Atack/AtackCollision.set_deferred("disabled", false)
+			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
 			is_crouch = false
 			$AnimatedSprite.animation = "jump"
 			
@@ -78,7 +88,7 @@ func _on_AnimatedSprite_animation_finished():
 		$AnimatedSprite.animation ="idle"
 
 func _timeout():
-	$Atack/AtackCollision.set_deferred("disabled", true)
+	$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
 	timer.stop()
 	is_atack = false
 
@@ -94,10 +104,12 @@ func update_hp():
 
 func _on_AnimatedSprite_frame_changed():
 	if $AnimatedSprite.animation == "atack":
-		if $AnimatedSprite.frame == 1:
-			$Atack/AtackCollision.set_deferred("disabled", false)
+		if $AnimatedSprite.frame == 2:
+			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", false)
 
 
 func _on_Atack_body_entered(body):
-	body.hurt(dmg)
+	if body is Enemy:
+		body.hurt(dmg)
+	
 
