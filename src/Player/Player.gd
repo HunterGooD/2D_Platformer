@@ -7,10 +7,13 @@ export var jump: = 1000
 export var dmg = 10
 
 var timer = null
+var direction = 1
+var iter = 0
 
 var is_crouch = false
 var is_atack = false
 var is_dead = false
+var is_cast = false
 
 func _init():
 	timer = Timer.new()
@@ -28,13 +31,21 @@ func _physics_process(delta: float) -> void:
 		get_tree().reload_current_scene()
 	
 	if not is_dead:
+		if Input.is_action_just_pressed("select_bow"):
+			PlayerData.update_weapon(2)
+		if Input.is_action_just_pressed("select_sword"):
+			PlayerData.update_weapon(1)
+		if Input.is_action_just_pressed("select_mage"):
+			PlayerData.update_weapon(3)
 			
+		if Input.is_action_just_released("player_atack_light") and PlayerData.selected_weapon() == "mage" and is_cast:
+			$AnimatedSprite.frame = 0
+			$AnimatedSprite.animation ="idle"
+			is_cast = false
+			is_atack = false
+		
 		if Input.is_action_pressed("player_atack_light") and is_on_floor() and !is_atack:
-			$AnimatedSprite.animation = "atack"
-			velocity.x = 0
-			timer.start()
-			
-			is_atack = true
+			play_atack()
 	
 	if not is_atack and not is_dead:
 		if Input.is_action_just_pressed("player_couth") and is_on_floor():
@@ -45,12 +56,14 @@ func _physics_process(delta: float) -> void:
 			$AnimatedSprite.animation = "crouch"
 		
 		if Input.is_action_pressed("player_left"):
+			direction = -1
 			velocity.x = -speed
 			$AnimatedSprite.flip_h = true
 			$AnimatedSprite/Atack/AtackCollision.position.x = -abs($AnimatedSprite/Atack/AtackCollision.position.x)
 			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
 			play_aRun()
 		elif Input.is_action_pressed("player_right"):
+			direction = 1
 			velocity.x = speed
 			$AnimatedSprite.flip_h = false
 			$AnimatedSprite/Atack/AtackCollision.position.x = abs($AnimatedSprite/Atack/AtackCollision.position.x)
@@ -86,6 +99,11 @@ func _on_AnimatedSprite_animation_finished():
 	elif $AnimatedSprite.animation == "atack":
 		$AnimatedSprite.frame = 0
 		$AnimatedSprite.animation ="idle"
+	elif $AnimatedSprite.animation == "bow":
+		$AnimatedSprite.frame = 0
+		$AnimatedSprite.animation ="idle"
+	elif $AnimatedSprite.animation == "cast":
+		$AnimatedSprite.animation ="cast_loop"
 
 func _timeout():
 	$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
@@ -106,10 +124,47 @@ func _on_AnimatedSprite_frame_changed():
 	if $AnimatedSprite.animation == "atack":
 		if $AnimatedSprite.frame == 2:
 			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", false)
-
+	if $AnimatedSprite.animation == "bow":
+		if $AnimatedSprite.frame == 7:
+			var arrow = load("res://src/Objects/Arrow.tscn")
+			var arrow_inst = arrow.instance()
+			arrow_inst.direction = direction
+			arrow_inst.position = $Position2D.global_position
+			get_parent().add_child(arrow_inst)
+	if $AnimatedSprite.animation == "cast_loop":
+		if $AnimatedSprite.frame == 3:
+			#if iter != 1:
+			#	iter += 1
+			#else:
+			_cast_end()
+			
 
 func _on_Atack_body_entered(body):
 	if body is Enemy:
 		body.hurt(dmg)
-	
 
+func _cast_end():
+	if is_cast:
+		var waveform = load("res://src/Objects/Waveform.tscn")
+		var w_inst = waveform.instance()
+		w_inst.position = $Position2D2.global_position
+		w_inst.direction = direction
+		w_inst.damage = 20
+		get_parent().add_child(w_inst)
+		is_cast = false
+		is_atack = false
+		iter = 0
+
+func play_atack():
+	velocity.x = 0
+	is_atack = true
+	if PlayerData.selected_weapon() == "sword":
+		$AnimatedSprite.animation = "atack"
+		timer.start()
+	elif PlayerData.selected_weapon() == "bow":
+		$AnimatedSprite.animation = "bow"
+		timer.start()
+	elif PlayerData.selected_weapon() == "mage" and not is_cast:
+		is_cast = true
+		$AnimatedSprite.animation = "cast"
+		timer.start()

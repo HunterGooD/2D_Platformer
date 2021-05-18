@@ -140,7 +140,7 @@ animations = [ {
 "frames": [ SubResource( 14 ), SubResource( 15 ), SubResource( 16 ), SubResource( 17 ) ],
 "loop": false,
 "name": "atack",
-"speed": 5.0
+"speed": 6.0
 }, {
 "frames": [ SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ) ],
 "loop": true,
@@ -167,7 +167,7 @@ collision_layer = 2
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Body"]
 frames = SubResource( 24 )
 animation = "idle"
-frame = 3
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]

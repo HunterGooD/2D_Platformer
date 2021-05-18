@@ -1,7 +1,7 @@
 extends "res://src/Enemy/Enemy.gd"
 
 var ammo
-export var time_betwen_shoot = 0.1
+export var time_betwen_shoot = 0.3
 var timer_betwen_shoot  
 
 var direction = -1
@@ -20,26 +20,27 @@ func _ready():
 func _physics_process(delta):
 	if not is_atack and not is_died:
 		if not $RayCast2D2.is_colliding() and not $RayCast2D.is_colliding():
-			$Body/AnimatedSprite.animation = "idle"
-			velocity.x = 0
+			$Body/AnimatedSprite.play("idle")
 		
 		if $RayCast2D.is_colliding():
 			if $RayCast2D.get_collider().get("name") == "Player":
 				rotation(1)
 				direction = -1
+				is_atack = true
 				timer_betwen_shoot.start()
 		
 		if $RayCast2D2.is_colliding():
 			if $RayCast2D2.get_collider().get("name") == "Player":
 				rotation(0)
 				direction = 1
+				is_atack = true
 				timer_betwen_shoot.start()
 					
 
 func _finish_animation():
 	if $Body/AnimatedSprite.animation == "atack":
 		is_atack = false
-		#$Body/AnimatedSprite.animation = "idle"
+		$Body/AnimatedSprite.animation = "idle"
 	
 func _frame_changed():
 	if $Body/AnimatedSprite.animation == "atack" and $Body/AnimatedSprite.frame == 2:
@@ -59,7 +60,7 @@ func rotation(a: int) -> void:
 
 func _shoot(): 
 	if not is_died:
-		is_atack = true
+		is_atack = false
 		$Body/AnimatedSprite.animation = "atack"
 	
 

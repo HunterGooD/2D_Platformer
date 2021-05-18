@@ -55,11 +55,10 @@ func hurt(dmg:int) -> void:
 			var gold_inst = gold.instance()
 			gold_inst.curent = 10
 			gold_inst.position = position + Vector2(40, 0)
-			get_parent().add_child(gold_inst)
+			get_parent().call_deferred("add_child", gold_inst)
 		elif is_treasure and len(treasures) != 0:
-			#TODO: drop treasure from array 
 			for treasure in treasures:
-				print(treasure)
+				get_parent().call_deferred("add_child", treasure)
 	elif not is_died:
 		$Body/AnimatedSprite.animation = "hurt"
 		hp -= dmg

@@ -1,18 +1,6 @@
-extends Area2D
+extends "res://src/Objects/UsingObjects.gd"
 
-var next_to_player = false
+export var heal_power = 10
 
-func _physics_process(delta):
-	if Input.is_action_just_pressed("use") and next_to_player:
-		PlayerData.hp += 10
-		queue_free()
-		
-
-func _on_MedicalKit_body_entered(body):
-	$AnimationPlayer.play("fade_in")
-	next_to_player = true
-
-
-func _on_MedicalKit_body_exited(body):
-	$AnimationPlayer.play("fade_out")
-	next_to_player = false
+func action():
+	PlayerData.hp += heal_power
