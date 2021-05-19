@@ -24,20 +24,17 @@ func _init():
 func _ready():
 	PlayerData.connect("hp_updated", self, "update_hp")
 
+func _input(event):
+	if event.as_text() in ["1", "2", "3"] and not is_dead:
+		PlayerData.update_weapon(int(event.as_text()))
+
 func _physics_process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("reload"):
 		PlayerData.reset()
 		get_tree().reload_current_scene()
 	
-	if not is_dead:
-		if Input.is_action_just_pressed("select_bow"):
-			PlayerData.update_weapon(2)
-		if Input.is_action_just_pressed("select_sword"):
-			PlayerData.update_weapon(1)
-		if Input.is_action_just_pressed("select_mage"):
-			PlayerData.update_weapon(3)
-			
+	if not is_dead:			
 		if Input.is_action_just_released("player_atack_light") and PlayerData.selected_weapon() == "mage" and is_cast:
 			$AnimatedSprite.frame = 0
 			$AnimatedSprite.animation ="idle"

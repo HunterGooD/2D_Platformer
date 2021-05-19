@@ -97,6 +97,11 @@ animations = [ {
 "name": "idle",
 "speed": 3.0
 }, {
+"frames": [ ExtResource( 56 ), ExtResource( 46 ), ExtResource( 27 ), ExtResource( 8 ), ExtResource( 31 ), ExtResource( 63 ), ExtResource( 53 ), ExtResource( 71 ), ExtResource( 66 ) ],
+"loop": false,
+"name": "bow",
+"speed": 9.0
+}, {
 "frames": [ ExtResource( 40 ), ExtResource( 16 ), ExtResource( 38 ) ],
 "loop": true,
 "name": "hurt",
@@ -105,7 +110,7 @@ animations = [ {
 "frames": [ ExtResource( 54 ), ExtResource( 37 ), ExtResource( 44 ), ExtResource( 10 ), ExtResource( 48 ), ExtResource( 17 ), ExtResource( 45 ), ExtResource( 32 ) ],
 "loop": false,
 "name": "jump",
-"speed": 8.0
+"speed": 10.0
 }, {
 "frames": [ ExtResource( 55 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ) ],
 "loop": true,
@@ -121,11 +126,6 @@ animations = [ {
 "loop": true,
 "name": "idle_with_sword",
 "speed": 4.0
-}, {
-"frames": [ ExtResource( 56 ), ExtResource( 46 ), ExtResource( 27 ), ExtResource( 8 ), ExtResource( 31 ), ExtResource( 63 ), ExtResource( 53 ), ExtResource( 71 ), ExtResource( 66 ) ],
-"loop": false,
-"name": "bow",
-"speed": 9.0
 }, {
 "frames": [ ExtResource( 60 ), ExtResource( 15 ), ExtResource( 28 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 49 ) ],
 "loop": false,

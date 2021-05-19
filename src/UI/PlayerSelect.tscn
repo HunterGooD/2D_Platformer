@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/gui/case_rien0.png" type="Texture" id=1]
+[ext_resource path="res://assets/gui/interface_parametres.png" type="Texture" id=2]
+[ext_resource path="res://assets/fonts/LanaPixel.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://assets/gui/case_rien1.png" type="Texture" id=4]
+[ext_resource path="res://src/UI/PlayerSelect.gd" type="Script" id=5]
+[ext_resource path="res://assets/gui/bouton_quete01.png" type="Texture" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 43
+outline_size = 1
+font_data = ExtResource( 3 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": true,
+"name": "selected",
+"speed": 5.0
+} ]
+
+[node name="PlayerSelect" type="Node2D"]
+script = ExtResource( 5 )
+
+[node name="TextureButton" type="TextureButton" parent="."]
+margin_right = 500.0
+margin_bottom = 570.0
+rect_min_size = Vector2( 200, 270 )
+rect_scale = Vector2( 0.5, 0.5 )
+texture_normal = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TextureButton"]
+margin_left = 51.1266
+margin_top = 17.1624
+margin_right = 450.127
+margin_bottom = 61.1624
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Красная шапочка"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="TextureButton"]
+position = Vector2( 250.002, 319.569 )
+scale = Vector2( 4.04838, 3.93003 )
+frames = SubResource( 2 )
+
+[node name="Position2D" type="Position2D" parent="TextureButton"]
+position = Vector2( 271.223, 309.363 )
+
+[node name="Access" type="Sprite" parent="."]
+visible = false
+position = Vector2( 124.93, 157.351 )
+scale = Vector2( 0.639782, 0.639782 )
+texture = ExtResource( 6 )
+[connection signal="button_up" from="TextureButton" to="." method="_on_TextureButton_button_up"]

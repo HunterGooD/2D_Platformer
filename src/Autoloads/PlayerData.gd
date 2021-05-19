@@ -32,6 +32,14 @@ func set_hp(val:int) -> void:
 func reset() -> void:
 	score = 0
 	hp = 40
+	rune = false
+	weapons = [
+	{
+		"name": "sword",
+		"selected": true,
+	}
+]
+	
 
 func add_weapons(a):
 	weapons.append(a)
