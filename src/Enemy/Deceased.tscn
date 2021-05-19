@@ -165,10 +165,12 @@ shape = SubResource( 1 )
 collision_layer = 2
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Body"]
+position = Vector2( 10.2279, 6.23686 )
 frames = SubResource( 24 )
 animation = "idle"
-frame = 1
+frame = 3
 playing = true
+offset = Vector2( -10.2279, -6.23686 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 modulate = Color( 0.215686, 0.870588, 0.101961, 1 )
