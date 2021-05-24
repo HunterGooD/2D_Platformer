@@ -14,6 +14,7 @@ var is_crouch = false
 var is_atack = false
 var is_dead = false
 var is_cast = false
+var is_hurt = false
 
 func _init():
 	timer = Timer.new()
@@ -46,11 +47,13 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_atack and not is_dead:
 		if Input.is_action_just_pressed("player_couth") and is_on_floor():
-			#if $AnimatedSprite.animation == "run":
-			#	$AnimatedSprite.animation = "slide"
+			if $AnimatedSprite.animation == "run":
+				is_crouch = true
+				$AnimatedSprite.animation = "slide"
+				slide_collision()
 			#else:
-			is_crouch = true
-			$AnimatedSprite.animation = "crouch"
+			#is_crouch = true
+			#$AnimatedSprite.animation = "crouch"
 		
 		if Input.is_action_pressed("player_left"):
 			direction = -1
@@ -68,10 +71,10 @@ func _physics_process(delta: float) -> void:
 			play_aRun()
 		else:
 			velocity.x = 0
-			if is_on_floor() and not is_crouch:
+			if is_on_floor() and not is_crouch and not is_hurt:
 				$AnimatedSprite.animation ="idle"
 		
-		if Input.is_action_pressed("player_jump") and is_on_floor():
+		if Input.is_action_pressed("player_jump") and is_on_floor() and not is_crouch:
 			$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
 			is_crouch = false
 			$AnimatedSprite.animation = "jump"
@@ -79,7 +82,7 @@ func _physics_process(delta: float) -> void:
 			velocity.y = -jump
 			
 		if not is_on_floor():
-			if $AnimatedSprite.animation != "jump":
+			if $AnimatedSprite.animation != "jump" and not is_crouch:
 				$AnimatedSprite.animation = "fall"
 			
 	
@@ -101,6 +104,11 @@ func _on_AnimatedSprite_animation_finished():
 		$AnimatedSprite.animation ="idle"
 	elif $AnimatedSprite.animation == "cast":
 		$AnimatedSprite.animation ="cast_loop"
+	elif $AnimatedSprite.animation == "slide":
+		is_crouch = false
+		slide_collision()
+	elif $AnimatedSprite.animation == "hurt":
+		is_hurt = false
 
 func _timeout():
 	$AnimatedSprite/Atack/AtackCollision.set_deferred("disabled", true)
@@ -114,6 +122,7 @@ func update_hp():
 		velocity.x = 0
 		$AnimatedSprite.animation = "die"
 	else:
+		is_hurt = true
 		$AnimatedSprite.animation = "hurt"
 
 
@@ -137,7 +146,7 @@ func _on_AnimatedSprite_frame_changed():
 			
 
 func _on_Atack_body_entered(body):
-	if body is Enemy:
+	if body is Enemy or body.name == "ArcaneArcher":
 		body.hurt(dmg)
 
 func _cast_end():
@@ -165,3 +174,7 @@ func play_atack():
 		is_cast = true
 		$AnimatedSprite.animation = "cast"
 		timer.start()
+
+func slide_collision():
+	$SlideCollision.set_deferred("disabled", not is_crouch)
+	$CollisionShape2D.set_deferred("disabled",  is_crouch)

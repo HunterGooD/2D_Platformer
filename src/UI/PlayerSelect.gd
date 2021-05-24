@@ -14,6 +14,7 @@ func set_selected(val: bool):
 		$TextureButton/AnimatedSprite.animation = "selected"
 	elif not access:
 		get_parent().get_parent().open_prompt(prompt)
+	else:
 		$TextureButton/AnimatedSprite.animation = "default"
 
 func set_prewiew(prew):
